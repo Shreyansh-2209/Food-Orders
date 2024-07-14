@@ -187,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       width: 4,
                     ),
                     Container(
-                      width: 230,
+                      width: 200,
                       height: 40,
                       child: Padding(
                         padding:
@@ -217,7 +217,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 ),
               ),
               SizedBox(
-                width: 10,
+                width: 8,
               ),
               CircleAvatar(
                 radius: 25,
