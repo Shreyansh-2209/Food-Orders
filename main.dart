@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:food_orders/cart.dart';
 import 'package:food_orders/orders.dart';
-
+import 'package:food_orders/searchpage.dart';
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,38 +19,40 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Orders Page'),
+      home: const MyHomePage(),
     );
   }
 }
-
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   late var myFocusNode = FocusNode();
   late AnimationController _controller;
   late Animation<double> _animation;
-
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: Duration(seconds: 2),
+      duration: Duration(seconds: 3),
       vsync: this,
     )..repeat();
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
     myFocusNode = FocusNode();
   }
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    myFocusNode.dispose();
+    _controller.dispose();
+
+    super.dispose();
+  }
 
   final search = TextEditingController();
-
   var arrDishes = [
     {"image": "assets/images/biryani.png", "name": "Biryani"},
     {"image": "assets/images/cake.png", "name": "Cake"},
@@ -90,7 +90,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       "variety": " ICE - CREAMS  |  SHAKES"
     },
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,11 +111,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             weight: 45,
           ),
         ),
-        backgroundColor: Color(0xFF252525),
+        //backgroundColor: Color(0xFF252525),
+        backgroundColor: Colors.transparent,
         body: ListView(scrollDirection: Axis.vertical, children: [
-          SizedBox(
-            height: 20,
-          ),
           Center(
             child: AnimatedBuilder(
                 animation: _animation,
@@ -135,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       child: Text(
                         "FOOD ORDERS",
                         style: TextStyle(
-                          fontSize: 30,
+                          fontSize: 32,
                           fontFamily: "Ethnocentric",
                           letterSpacing: 1,
                           color: Colors.white,
@@ -144,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 }),
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           Row(
             children: [
@@ -153,10 +150,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               ),
               Container(
                 height: 45,
-                width: 330,
+                width: 315,
                 decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey.shade900,
+                    borderRadius: BorderRadius.circular(15),
                     border: Border.all(color: Colors.black),
                     boxShadow: [
                       BoxShadow(
@@ -172,14 +169,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     ),
                     Container(
                       child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Searchpage()));
+                          },
                           icon: Icon(
                             Icons.search,
                             color: Colors.red,
                           )),
                     ),
                     Container(
-                      color: Colors.white,
+                      color: Colors.white54,
                       width: 1,
                       height: 25,
                     ),
@@ -187,16 +186,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       width: 4,
                     ),
                     Container(
-                      width: 200,
+                      width: 230,
                       height: 40,
                       child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: 8, top: 8, bottom: 8),
+                        padding: const EdgeInsets.only(left: 8, top: 8, bottom: 8),
                         child: TextField(
                           focusNode: myFocusNode,
-                          cursorHeight: 20,
+                          cursorHeight: 25,
                           cursorColor: Colors.white,
                           cursorWidth: 0.5,
+                          enabled: false,
+                          onTap: (){
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Searchpage()));
+                          },
                           onTapOutside: (e) => myFocusNode.unfocus(),
                           style: TextStyle(
                               color: Colors.white,
@@ -217,7 +219,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 ),
               ),
               SizedBox(
-                width: 8,
+                width: 10,
               ),
               CircleAvatar(
                 radius: 25,
@@ -303,6 +305,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             backgroundImage:
                                 AssetImage(value['image'].toString()),
                           ),
+                          SizedBox(height: 1,),
                           Text(
                             value['name'].toString(),
                             style: TextStyle(
