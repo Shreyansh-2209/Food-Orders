@@ -9,14 +9,15 @@ class _OrdersPageState extends State<OrdersPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text("Orders",style: TextStyle(fontFamily: "Ethnocentric",fontSize: 25,color: Colors.red),),
         centerTitle: true,
       ),
       body: Container(
-        color: Colors.red,
+        color: Colors.black,
       ),
     );
   }

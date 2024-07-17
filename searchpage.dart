@@ -106,10 +106,16 @@ class _SearchpageState extends State<Searchpage> {
                             cursorColor: Colors.white,
                             cursorWidth: 0.5,
                             onTapOutside: (e) => myFocusNode.unfocus(),
+                            showCursor: false,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500),
+                            onTap: (){
+                              showSearch(
+                                  context: context,
+                                  delegate: CustomSearchDelegate());
+                            },
                             controller: search,
                             decoration: InputDecoration.collapsed(
                                 hintText: "Search food or restaurant...",
@@ -166,6 +172,116 @@ class _SearchpageState extends State<Searchpage> {
 
         ],
       )
+    );
+  }
+}
+
+class CustomSearchDelegate extends SearchDelegate{
+  
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return ThemeData(
+      colorScheme: ColorScheme.dark(),
+      hintColor: Colors.white,
+    );
+  }
+
+  late var myFocusNode = FocusNode();
+
+  List<String>  FoodItems = [
+    'Pizza',
+    'Dominos',
+    'Burger',
+    'Momos',
+    'Ice Cream',
+    'Wow Momos',
+    'Burger King',
+    'Coke',
+    'Garlic Bread',
+    'Chicken Wings',
+    'KFC',
+    'Rice',
+    'Fries',
+    'Dosa',
+    'Shawrma'
+  ];
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+          icon: Icon(Icons.clear,color: Colors.white,),
+          onPressed: (){
+            query = "" ;
+      },
+      )
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(onPressed: (){
+      close(context, null) ;
+    }, icon: Icon(Icons.arrow_back,color: Colors.white,));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> matchItems = [];
+    for (var item in FoodItems){
+      if(item.toLowerCase().contains(query.toLowerCase())){
+        matchItems.add(item);
+      }
+    }
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+        itemBuilder: (context,index){
+          var result = matchItems[index];
+          return ListTile(
+            tileColor: Colors.black,
+            titleTextStyle: TextStyle(color: Colors.white),
+            title: Text(result),
+          );
+        },
+        itemCount: matchItems.length,
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> matchItems = [];
+    for (var item in FoodItems){
+      if(item.toLowerCase().contains(query.toLowerCase())){
+        matchItems.add(item);
+      }
+    }
+    return Container(
+      color: Colors.black,
+      child : Padding(
+        padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context,index){
+                var result = matchItems[index];
+                return Card(
+                  elevation: 4,
+                  shadowColor: Colors.red,
+                  shape: Border.symmetric(vertical: BorderSide(width: 2,color: Colors.white),horizontal: BorderSide(width: 2,color: Colors.red)),
+                  margin: EdgeInsets.only(left: 10,right: 10,top: 4,bottom: 2),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(5),
+                    titleAlignment: ListTileTitleAlignment.center,
+                    title: Text(result),
+                    tileColor: Colors.black,
+                    titleTextStyle: TextStyle(color: Colors.white,fontSize: 20,),
+                  ),
+                );
+              },
+              itemCount: matchItems.length,
+            ),
+          ),
+
+
     );
   }
 }
