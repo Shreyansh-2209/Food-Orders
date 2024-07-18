@@ -100,7 +100,6 @@ class _SearchpageState extends State<Searchpage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8, top: 11, bottom: 11),
                           child: TextField(
-
                             focusNode: myFocusNode,
                             cursorHeight: 25,
                             cursorColor: Colors.white,
@@ -182,7 +181,7 @@ class CustomSearchDelegate extends SearchDelegate{
   ThemeData appBarTheme(BuildContext context) {
     return ThemeData(
       colorScheme: ColorScheme.dark(),
-      hintColor: Colors.white,
+      hintColor: Colors.grey.shade700,
     );
   }
 
@@ -210,8 +209,9 @@ class CustomSearchDelegate extends SearchDelegate{
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
-          icon: Icon(Icons.clear,color: Colors.white,),
+          icon: Icon(Icons.cancel,color: Colors.redAccent,size: 24,),
           onPressed: (){
+            myFocusNode.unfocus();
             query = "" ;
       },
       )
@@ -221,8 +221,9 @@ class CustomSearchDelegate extends SearchDelegate{
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(onPressed: (){
+      myFocusNode.unfocus();
       close(context, null) ;
-    }, icon: Icon(Icons.arrow_back,color: Colors.white,));
+    }, icon: Icon(Icons.arrow_circle_left_outlined,color: Colors.redAccent,size: 24,));
   }
 
   @override
