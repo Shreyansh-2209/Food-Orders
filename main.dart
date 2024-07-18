@@ -1,15 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:food_orders/cart.dart';
-import 'package:food_orders/orders.dart';
+import 'package:food_orders/Cart/cart_provider.dart';
+import 'package:food_orders/Cart/cart.dart';
+import 'package:provider/provider.dart';
+import 'package:food_orders/orders/orders.dart';
 import 'package:food_orders/routes/restaurant_route.dart';
 import 'package:food_orders/searchpage.dart';
+import 'package:food_orders/restaurant_data.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => CartProvider(),
+    child: MyApp(),
+  ));
 }
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,6 +33,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -54,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  final search = TextEditingController();
+  /*final search = TextEditingController();
   var arrDishes = [
     {"image": "assets/images/biryani.png", "name": "Biryani"},
     {"image": "assets/images/cake.png", "name": "Cake"},
@@ -347,7 +356,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ]
       }]
     },
-  ];
+  ];*/
 
   @override
   Widget build(BuildContext context) {
@@ -361,7 +370,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           ),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Cart()));
+                context, MaterialPageRoute(builder: (context) => CartPage()));
           },
           child: Icon(
             Icons.shopping_cart,
@@ -488,7 +497,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => OrdersPage()));
+                              builder: (context) => OrdersPage(data: [],)));
                     },
                     icon: Icon(
                       Icons.shopping_bag,

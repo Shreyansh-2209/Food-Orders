@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_orders/Cart/cart_provider.dart';
+import 'package:provider/provider.dart';
 
-class Restaurant extends StatefulWidget {
+class Restaurant extends StatelessWidget {
 
   final List data;
 
@@ -15,11 +17,6 @@ class Restaurant extends StatefulWidget {
     });
   }
 
-  @override
-  State<Restaurant> createState() => _RestaurantState();
-}
-
-class _RestaurantState extends State<Restaurant> {
   Widget getConditionalIcon(bool condition) {
     if (condition) {
       return Row(
@@ -38,7 +35,7 @@ class _RestaurantState extends State<Restaurant> {
           SizedBox(width: 2,),
           Container(width: 1,height: 10,color: Colors.white,),
           SizedBox(width: 4,),
-          Text("NON-VEG",style: TextStyle(color: Colors.white,),)
+          Text("NON-VEG",style: TextStyle(color: Colors.white,fontFamily: "Inter",fontSize: 12),)
         ],
       );
     }
@@ -66,7 +63,7 @@ class _RestaurantState extends State<Restaurant> {
                 Container(
                   height: 200,
                   width: 400,
-                  child: Image.asset(widget.newData['image'], fit: BoxFit.fitWidth,),
+                  child: Image.asset(newData['image'], fit: BoxFit.fitWidth,),
                 ),
                 Positioned(
                   top: 130,
@@ -77,12 +74,12 @@ class _RestaurantState extends State<Restaurant> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 17),
-                          child: Text(widget.newData['name'], style: TextStyle(
+                          child: Text(newData['name'], style: TextStyle(
                               color: Colors.white,
                               fontSize: 22,
                               fontFamily: "Inter"),),
                         ),
-                        Text(widget.newData['variety'], style: TextStyle(color: Colors
+                        Text(newData['variety'], style: TextStyle(color: Colors
                             .white, fontSize: 10, fontFamily: "Inter"),)
                       ],
                     ),
@@ -99,7 +96,7 @@ class _RestaurantState extends State<Restaurant> {
                   left: 160,
                   child: CircleAvatar(
                       radius: 30,
-                      backgroundImage: AssetImage(widget.newData['Logo'])
+                      backgroundImage: AssetImage(newData['Logo'])
                   ),
                 )
 
@@ -117,7 +114,7 @@ class _RestaurantState extends State<Restaurant> {
           Expanded(
             child: ListView(
               scrollDirection: Axis.vertical,
-              children: widget.newData['Menu'].map<Widget>((info) {
+              children: newData['Menu'].map<Widget>((info) {
                 var mappedInfo = info as Map;
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -176,8 +173,24 @@ class _RestaurantState extends State<Restaurant> {
                                 ),
                                 Positioned(
                                   top: 90,
-                                  left: 31,
+                                  left: 22,
                                   child: InkWell(
+                                    onTap: (){
+                                      final cartProvider =
+                                      Provider.of<CartProvider>(context,
+                                          listen: false);
+                                      cartProvider.addItem(CartItem(
+                                        name: mappedInfo['Name'],
+                                        price: mappedInfo['Price'],
+                                        image: mappedInfo['photo'],
+                                      ));
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text("Added to Card"),
+                                          duration: Duration(seconds: 2),
+                                        )
+                                      );
+                                    },
                                     child: Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8) ,
