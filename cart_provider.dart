@@ -2,38 +2,39 @@ import 'package:flutter/material.dart';
 
 class CartItem {
   final String name;
-  final double price;
+  final int price;
+  final String image;
   int quantity;
 
   CartItem({
     required this.name,
     required this.price,
+    required this.image,
     this.quantity = 1,
   });
 
-  double get subtotal => price * quantity;
+  int get subtotal => price * quantity;
 }
 
 class CartProvider with ChangeNotifier {
-  List<CartItem> _items = [
-    CartItem(name: 'Peach Milkshake', price: 60.0, quantity: 2),
-    CartItem(name: 'Peach Milkshake', price: 60.0, quantity: 4),
-    CartItem(name: 'Peach Milkshake', price: 60.0, quantity: 2),
-  ];
+  List<CartItem> _items = [];
 
   List<CartItem> get items => _items;
 
-  int get totalItems => _items.fold(0, (sum, item) => sum + item.quantity);
+  int get totalItems =>
+      _items.fold(0, (total, current) => total + current.quantity);
 
-  double get totalPrice => _items.fold(0, (sum, item) => sum + item.subtotal);
+  int get totalPrice =>
+      _items.fold(0, (total, current) => total + current.subtotal);
 
   void addItem(CartItem item) {
-    _items.add(item);
-    notifyListeners();
-  }
-
-  void removeItem(CartItem item) {
-    _items.remove(item);
+    var existingItem = _items.firstWhere((i) => i.name == item.name,
+        orElse: () => CartItem(name: '', price: 0, image: ''));
+    if (existingItem.name == '') {
+      _items.add(item);
+    } else {
+      existingItem.quantity++;
+    }
     notifyListeners();
   }
 
@@ -45,7 +46,14 @@ class CartProvider with ChangeNotifier {
   void decrementQuantity(CartItem item) {
     if (item.quantity > 1) {
       item.quantity--;
-      notifyListeners();
+    } else {
+      _items.remove(item);
     }
+    notifyListeners();
+  }
+
+  void removeItem(CartItem item) {
+    _items.remove(item);
+    notifyListeners();
   }
 }
