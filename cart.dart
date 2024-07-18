@@ -9,37 +9,102 @@ class CartPage extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.black,
         title: Text(
-          "CART",
+          'CART',
           style: TextStyle(
               color: Colors.red, fontSize: 25, fontFamily: "Ethnocentric"),
+        ),
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Consumer<CartProvider>(
         builder: (context, cartProvider, child) {
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: cartProvider.items.length,
-                  itemBuilder: (context, index) {
-                    final item = cartProvider.items[index];
-                    return _buildCartItem(context, item);
-                  },
+          if (cartProvider.items.isEmpty) {
+            return _buildEmptyCart(context);
+          } else {
+            return Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: cartProvider.items.map((item) {
+                        return _buildCartItem(context, item);
+                      }).toList(),
+                    ),
+                  ),
                 ),
-              ),
-              _buildSummary(cartProvider),
-            ],
-          );
+                _buildSummary(cartProvider),
+              ],
+            );
+          }
         },
+      ),
+    );
+  }
+
+  Widget _buildEmptyCart(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/empty_cart.png',
+            width: 200,
+            height: 200,
+          ),
+          SizedBox(height: 16),
+          Text(
+            'Your cart is empty',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'LOOKS LIKE YOU HAVEN\'T ADDED ANYTHING TO YOUR CART YET.',
+            style: TextStyle(
+                color: Colors.white70, fontSize: 16, fontFamily: "Inter"),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'ORDER SOMETHING',
+                  style: TextStyle(
+                      fontFamily: "Inter", color: Colors.white, fontSize: 16),
+                ),
+                SizedBox(width: 8.0),
+                Icon(Icons.arrow_forward, color: Colors.white),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildCartItem(BuildContext context, CartItem item) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    SingleChildScrollView;
     return Card(
       color: Colors.grey[850],
       margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -61,19 +126,16 @@ class CartPage extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'EACH: ₹${item.price}',
-                    style:
-                        TextStyle(color: Colors.white70, fontFamily: "Inter"),
+                    'Each: ₹${item.price}',
+                    style: TextStyle(color: Colors.white70),
                   ),
                   Text(
-                    'NO. OF SUB ITEMS: ${item.quantity}',
-                    style:
-                        TextStyle(color: Colors.white70, fontFamily: "Inter"),
+                    'No. of sub-items: ${item.quantity}',
+                    style: TextStyle(color: Colors.white70),
                   ),
                   Text(
-                    'SUBTOTAL: ₹${item.subtotal}',
-                    style:
-                        TextStyle(color: Colors.white70, fontFamily: "Inter"),
+                    'Subtotal: ₹${item.subtotal}',
+                    style: TextStyle(color: Colors.white70),
                   ),
                 ],
               ),
