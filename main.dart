@@ -2,12 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:food_orders/cart.dart';
+import 'package:food_orders/cart_provider.dart';
 import 'package:food_orders/orders.dart';
-import 'package:food_orders/routes/restaurant_route.dart';
+import 'package:food_orders/restaurant_route.dart';
 import 'package:food_orders/searchpage.dart';
+import 'package:provider/provider.dart';
+import 'package:food_orders/restaurant_data.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => CartProvider(),
+    child: MyApp(),
+  ));
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
@@ -21,16 +29,18 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       initialRoute: '/',
-      onGenerateRoute: RestaurantRoute.generateRoute ,
+      onGenerateRoute: RestaurantRoute.generateRoute,
     );
   }
 }
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   late var myFocusNode = FocusNode();
   late AnimationController _controller;
@@ -45,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
     myFocusNode = FocusNode();
   }
+
   @override
   void dispose() {
     // Clean up the focus node when the Form is disposed.
@@ -53,301 +64,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
     super.dispose();
   }
-
-  final search = TextEditingController();
-  var arrDishes = [
-    {"image": "assets/images/biryani.png", "name": "Biryani"},
-    {"image": "assets/images/cake.png", "name": "Cake"},
-    {"image": "assets/images/chicken.png", "name": "Chicken"},
-    {"image": "assets/images/pizza.png", "name": "Pizza"},
-    {"image": "assets/images/burger.png", "name": "Burger"},
-    {"image": "assets/images/dosa.png", "name": "Dosa"},
-    {"image": "assets/images/rice.png", "name": "Rice"},
-    {"image": "assets/images/Shawrma.png", "name": "Shawarma"},
-  ];
-  var arrRestaurant = [
-    {
-      "image": "assets/images/zyaka.jpg",
-      "name": "Zaika's Restaurant ",
-      "variety": " CHINESE  |  NORTH INDIAN",
-      "route": "/stall1",
-      "details": [{
-        "image": "assets/images/zyaka.jpg",
-        "name": "Zaika's Restaurant ",
-        "variety": " CHINESE  |  NORTH INDIAN",
-        "Logo" : "assets/images/zyzka logo.jpg",
-        "Menu" : [
-          {
-            "Name" : "Samosa",
-            "Price" : 15,
-            "photo" : "assets/images/samosa.jpg",
-            "isVeg" : true ,
-            "desciption": "Indulge in our savory samosa: crispy pastry, filled with spiced potatoes and peas, perfect with chutney."
-        },
-          {
-            "Name" : "Paratha",
-            "Price" : 25,
-            "photo" : "assets/images/paratha.jpeg",
-            "isVeg" : true ,
-            "desciption": "Discover our delicious paratha: whole wheat, pan-fried, filled with spiced vegetables or paneer. "
-        },
-          {
-            "Name" : "Samosa",
-            "Price" : 15,
-            "photo" : "assets/images/samosa.jpg",
-            "isVeg" : true ,
-            "desciption": "Indulge in our savory samosa: crispy pastry, filled with spiced potatoes and peas, perfect with chutney."
-        },
-          {
-            "Name" : "Paratha",
-            "Price" : 25,
-            "photo" : "assets/images/paratha.jpeg",
-            "isVeg" : true ,
-            "desciption": "Discover our delicious paratha: whole wheat, pan-fried, filled with spiced vegetables or paneer. "
-        },
-          {
-            "Name" : "Samosa",
-            "Price" : 15,
-            "photo" : "assets/images/samosa.jpg",
-            "isVeg" : true,
-            "desciption": "Indulge in our savory samosa: crispy pastry, filled with spiced potatoes and peas, perfect with chutney."
-        },
-          {
-            "Name" : "Paratha",
-            "Price" : 25,
-            "photo" : "assets/images/paratha.jpeg",
-            "isVeg" : true ,
-            "desciption": "Discover our delicious paratha: whole wheat, pan-fried, filled with spiced vegetables or paneer. "
-        },
-        ]
-      }]
-    },
-    {
-      "image": "assets/images/pizza.jpeg",
-      "name": "Dominos",
-      "variety": " PIZZA  |  COKE ",
-      "route": "/stall2",
-      "details": [{
-        "image": "assets/images/pizza.jpeg",
-        "name": "Dominos",
-        "variety": " PIZZA  |  COKE ",
-        "Logo" : "assets/images/dominos logo.png",
-        "Menu" : [
-          {
-            "Name" : "Panner Pizza",
-            "Price" : 250,
-            "photo" : "assets/images/paneer-pizza.jpg",
-            "isVeg" : true ,
-            "desciption": "Delicious paneer pizza with rich tomato sauce, fresh vegetables, creamy paneer, and golden crust perfection."
-          },
-          {
-            "Name" : "Chicken Tikka Pizza",
-            "Price" : 300,
-            "photo" : "assets/images/chicken tikka pizza.jpg",
-            "isVeg" : false ,
-            "desciption": "Succulent chicken tikka,spicy sauce,melted cheese,and crispy crust for a mouthwatering delight."
-          },
-          {
-            "Name" : "Panner Pizza",
-            "Price" : 250,
-            "photo" : "assets/images/paneer-pizza.jpg",
-            "isVeg" : true ,
-            "desciption": "Delicious paneer pizza with rich tomato sauce,fresh vegetables, creamy paneer, and golden crust perfection."
-          },
-          {
-            "Name" : "Chicken Tikka Pizza",
-            "Price" : 300,
-            "photo" : "assets/images/chicken tikka pizza.jpg",
-            "isVeg" : false ,
-            "desciption": "Succulent chicken tikka,spicy sauce,melted cheese,and crispy crust for a mouthwatering delight."
-          },
-          {
-            "Name" : "Panner Pizza",
-            "Price" : 250,
-            "photo" : "assets/images/paneer-pizza.jpg",
-            "isVeg" : true,
-            "desciption": "Delicious paneer pizza with rich tomato sauce, fresh vegetables, creamy paneer, and golden crust perfection."
-          },
-          {
-            "Name" : "Chicken Tikka Pizza",
-            "Price" : 300,
-            "photo" : "assets/images/chicken tikka pizza.jpg",
-            "isVeg" : false ,
-            "desciption": "Succulent chicken tikka,spicy sauce,melted cheese,and crispy crust for a mouthwatering delight."
-          },
-        ]
-
-      }]
-    },
-    {
-      "image": "assets/images/Tandoori-Momos-2B.jpg",
-      "name": "WoW Momos",
-      "variety": "  VEG  |  NON - VEG",
-      "route": "/stall3",
-      "details": [{
-        "image": "assets/images/Tandoori-Momos-2B.jpg",
-        "name": "WoW Momos",
-        "variety": "  VEG  |  NON - VEG",
-        "Logo" : "assets/images/wow momos logo.jpg",
-        "Menu" : [
-          {
-            "Name" : "Veg Momo",
-            "Price" : 80,
-            "photo" : "assets/images/veg momos.jpeg",
-            "isVeg" : true ,
-            "desciption": "Steamed dumplings filled with fresh vegetables, served with a spicy dipping sauce."
-          },
-          {
-            "Name" : "Non-Veg Momo",
-            "Price" : 100,
-            "photo" : "assets/images/nonveg momo.jpg",
-            "isVeg" : false ,
-            "desciption": "Juicy meat-filled dumplings, steamed to perfection, accompanied by a tangy chili sauce."
-          },
-          {
-            "Name" : "Veg Momo",
-            "Price" : 80,
-            "photo" : "assets/images/veg momos.jpeg",
-            "isVeg" : true ,
-            "desciption": "Steamed dumplings filled with fresh vegetables, served with a spicy dipping sauce."
-          },
-          {
-            "Name" : "Non-Veg Momo",
-            "Price" : 100,
-            "photo" : "assets/images/nonveg momo.jpg",
-            "isVeg" : false ,
-            "desciption": "Juicy meat-filled dumplings, steamed to perfection, accompanied by a tangy chili sauce."
-          },
-          {
-            "Name" : "Veg Momo",
-            "Price" : 80,
-            "photo" : "assets/images/veg momos.jpeg",
-            "isVeg" : true ,
-            "desciption": "Steamed dumplings filled with fresh vegetables, served with a spicy dipping sauce."
-          },
-          {
-            "Name" : "Non-Veg Momo",
-            "Price" : 100,
-            "photo" : "assets/images/nonveg momo.jpg",
-            "isVeg" : false ,
-            "desciption": "Juicy meat-filled dumplings, steamed to perfection, accompanied by a tangy chili sauce."
-          },
-        ]
-      }]
-    },
-    {
-      "image": "assets/images/burger-with-melted-cheese.jpeg",
-      "name": "Burger King",
-      "variety": "BURGERS  |  FRIES",
-      "route": "/stall4",
-      "details": [{
-        "image": "assets/images/burger-with-melted-cheese.jpeg",
-        "name": "Burger King",
-        "variety": "BURGERS  |  FRIES",
-        "Logo" : "assets/images/burger king logo.png",
-        "Menu" : [
-          {
-            "Name" : "Burger",
-            "Price" : 60,
-            "photo" : "assets/images/burger.jpg",
-            "isVeg" : true,
-            "desciption": "Juicy patty, fresh lettuce, tomatoes, pickles, and melted cheese in a soft bun."
-          },
-          {
-            "Name" : "Fries",
-            "Price" : 40,
-            "photo" : "assets/images/fries.jpeg",
-            "isVeg" : true,
-            "desciption": "Golden, crispy potato fries, perfectly seasoned for a delightful crunch in every bite."
-          },
-          {
-            "Name" : "Burger",
-            "Price" : 60,
-            "photo" : "assets/images/burger.jpg",
-            "isVeg" : true ,
-            "desciption": "Juicy patty, fresh lettuce, tomatoes, pickles, and melted cheese in a soft bun."
-          },
-          {
-            "Name" : "Fries",
-            "Price" : 40,
-            "photo" : "assets/images/fries.jpeg",
-            "isVeg" : true ,
-            "desciption": "Golden, crispy potato fries, perfectly seasoned for a delightful crunch in every bite."
-          },
-          {
-            "Name" : "Burger",
-            "Price" : 60,
-            "photo" : "assets/images/burger.jpg",
-            "isVeg" : true ,
-            "desciption": "Juicy patty, fresh lettuce, tomatoes, pickles, and melted cheese in a soft bun."
-          },
-          {
-            "Name" : "Fries",
-            "Price" : 40,
-            "photo" : "assets/images/fries.jpeg",
-            "isVeg" : true ,
-            "desciption": "Golden, crispy potato fries, perfectly seasoned for a delightful crunch in every bite."
-          },
-        ]
-      }]
-    },
-    {
-      "image": "assets/images/ice cream.jpeg",
-      "name": "Kwality Walls",
-      "variety": " ICE - CREAMS  |  SHAKES",
-      "route": "/stall5",
-      "details": [{
-        "image": "assets/images/ice cream.jpeg",
-        "name": "Kwality Walls",
-        "variety": " ICE - CREAMS  |  SHAKES",
-        "Logo" : "assets/images/kwality walls icon.png",
-        "Menu" : [
-          {
-            "Name" : "Ice-Creams",
-            "Price" : 30,
-            "photo" : "assets/images/ice-cream.jpg",
-            "isVeg" : true ,
-            "desciption": "Creamy, rich ice cream in various flavors, a perfect treat to cool you down."
-          },
-          {
-            "Name" : "Shakes",
-            "Price" : 50,
-            "photo" : "assets/images/shakes.jpeg",
-            "isVeg" : true ,
-            "desciption": "Thick, creamy milkshakes in assorted flavors, blended to perfection for a refreshing treat."
-          },
-          {
-            "Name" : "Ice-Creams",
-            "Price" : 30,
-            "photo" : "assets/images/ice-cream.jpg",
-            "isVeg" : true,
-            "desciption": "Creamy, rich ice cream in various flavors, a perfect treat to cool you down."
-          },
-          {
-            "Name" : "Shakes",
-            "Price" : 50,
-            "photo" : "assets/images/shakes.jpeg",
-            "isVeg" : true ,
-            "desciption": "Thick, creamy milkshakes in assorted flavors, blended to perfection for a refreshing treat."
-          },
-          {
-            "Name" : "Ice-Creams",
-            "Price" : 30,
-            "photo" : "assets/images/ice-cream.jpg",
-            "isVeg" : true ,
-            "desciption": "Creamy, rich ice cream in various flavors, a perfect treat to cool you down."
-          },
-          {
-            "Name" : "Shakes",
-            "Price" : 50,
-            "photo" : "assets/images/shakes.jpeg",
-            "isVeg" : true ,
-            "desciption": "Thick, creamy milkshakes in assorted flavors, blended to perfection for a refreshing treat."
-          },
-        ]
-      }]
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -361,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           ),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Cart()));
+                context, MaterialPageRoute(builder: (context) => CartPage()));
           },
           child: Icon(
             Icons.shopping_cart,
@@ -429,7 +145,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     Container(
                       child: IconButton(
                           onPressed: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Searchpage()));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Searchpage()));
                           },
                           icon: Icon(
                             Icons.search,
@@ -448,15 +167,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       width: 230,
                       height: 40,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 8, top: 8, bottom: 8),
+                        padding:
+                            const EdgeInsets.only(left: 8, top: 8, bottom: 8),
                         child: TextField(
                           focusNode: myFocusNode,
                           cursorHeight: 25,
                           cursorColor: Colors.white,
                           cursorWidth: 0.5,
-                          onTap: (){
+                          onTap: () {
                             myFocusNode.unfocus();
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Searchpage()));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Searchpage()));
                           },
                           onTapOutside: (e) => myFocusNode.unfocus(),
                           style: TextStyle(
@@ -564,7 +287,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             backgroundImage:
                                 AssetImage(value['image'].toString()),
                           ),
-                          SizedBox(height: 1,),
+                          SizedBox(
+                            height: 1,
+                          ),
                           Text(
                             value['name'].toString(),
                             style: TextStyle(
@@ -597,8 +322,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             child: ListView(
               children: arrRestaurant.map((e) {
                 return InkWell(
-                  onTap:(){
-                    Navigator.of(context).pushNamed(e['route'].toString(),arguments:e['details']);
+                  onTap: () {
+                    Navigator.of(context).pushNamed(e['route'].toString(),
+                        arguments: e['details']);
                   },
                   child: Card(
                     elevation: 4,
